@@ -152,42 +152,60 @@ st.markdown(
         border-right: 1px solid #3d3d3d !important;
     }
     
-    /* Sidebar toggle button */
-    .css-1v0mbdj {
-        background-color: #3d3d3d !important;
-        border: 1px solid #4d4d4d !important;
+    /* Sidebar toggle button - Multiple selector approach */
+    .stApp > header,
+    .stApp > header > div,
+    .stApp > header > div > div,
+    .stApp > header > div > div > div,
+    .stApp > header > div > div > div > button {
+        background-color: #1a1a1a !important;
         color: #ffffff !important;
     }
 
-    /* Toolbar background */
-    .css-1v0mbdj > div {
-        background-color: #2d2d2d !important;
-    }
-
-    /* Toolbar text and icons */
-    .css-1v0mbdj span,
-    .css-1v0mbdj svg {
+    /* Target the hamburger menu specifically */
+    .stApp > header button[aria-label="View app settings"],
+    .stApp > header button[aria-label="View app settings"] > div,
+    .stApp > header button[aria-label="View app settings"] > div > div,
+    .stApp > header button[aria-label="View app settings"] > div > div > svg {
+        background-color: #3d3d3d !important;
         color: #ffffff !important;
         fill: #ffffff !important;
+        border: 2px solid #ffffff !important;
+        border-radius: 4px !important;
     }
 
-    /* iOS specific toolbar styling */
+    /* iOS specific overrides */
     @supports (-webkit-touch-callout: none) {
-        .css-1v0mbdj {
+        .stApp > header {
+            background-color: #1a1a1a !important;
+            border-bottom: 2px solid #3d3d3d !important;
+        }
+
+        .stApp > header button[aria-label="View app settings"] {
             background-color: #3d3d3d !important;
-            border: 1px solid #4d4d4d !important;
-            color: #ffffff !important;
+            border: 2px solid #ffffff !important;
+            border-radius: 4px !important;
+            padding: 8px !important;
         }
 
-        .css-1v0mbdj > div {
-            background-color: #2d2d2d !important;
-        }
-
-        .css-1v0mbdj span,
-        .css-1v0mbdj svg {
-            color: #ffffff !important;
+        .stApp > header button[aria-label="View app settings"] svg {
             fill: #ffffff !important;
+            width: 24px !important;
+            height: 24px !important;
         }
+    }
+
+    /* Additional header styling */
+    .stApp > header {
+        background-color: #1a1a1a !important;
+        border-bottom: 2px solid #3d3d3d !important;
+        padding: 0.5rem !important;
+    }
+
+    /* Make sure all header elements are visible */
+    .stApp > header * {
+        color: #ffffff !important;
+        fill: #ffffff !important;
     }
     
     /* Form elements */
