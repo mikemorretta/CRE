@@ -97,7 +97,7 @@ st.markdown(
     /* Headers */
     h1, h2, h3, h4 {
         font-weight: 700;
-        color: #ffffff;
+        color: #ffffff;  /* Pure white for better contrast */
         margin-top: 0.5rem;
         margin-bottom: 0.5rem;
         word-wrap: break-word;
@@ -120,7 +120,7 @@ st.markdown(
     
     .dataframe th {
         background-color: #3d3d3d;
-        color: #ffffff;
+        color: #ffffff;  /* Pure white for better contrast */
         font-weight: 600;
         text-align: center;
         position: sticky;
@@ -135,7 +135,7 @@ st.markdown(
         text-align: right;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         font-size: 15px;
-        color: #ffffff;
+        color: #ffffff;  /* Pure white for better contrast */
         padding: 12px 8px;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -259,9 +259,27 @@ st.markdown(
         font-size: 16px;
     }
     
+    /* Streamlit specific elements */
+    .stMarkdown h2 {
+        color: #ffffff !important;  /* Force white color for subheaders */
+    }
+
+    .stDataFrame {
+        background-color: #2d2d2d !important;
+    }
+
+    .stDataFrame th {
+        background-color: #3d3d3d !important;
+        color: #ffffff !important;
+    }
+
+    .stDataFrame td {
+        color: #ffffff !important;
+    }
+    
     /* Improve contrast for better readability */
     .stMarkdown, .stAlert, .dataframe {
-        color: #ffffff;
+        color: #ffffff !important;  /* Force white color with !important */
     }
     
     /* Improve button text readability */
