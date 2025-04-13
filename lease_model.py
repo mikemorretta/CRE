@@ -57,6 +57,26 @@ st.markdown(
         overflow-x: hidden;
     }
     
+    /* Remove top padding and margin */
+    .block-container {
+        padding-top: 0rem;
+        padding-bottom: 0.5rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    /* Remove the box above the title */
+    .stMarkdown:first-of-type {
+        display: none;
+    }
+    
+    /* Make title more compact */
+    h1 {
+        margin-top: 0rem;
+        margin-bottom: 0.5rem;
+        padding-top: 0rem;
+    }
+    
     /* Text styling */
     html, body, [class*="css"]  {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -82,6 +102,7 @@ st.markdown(
         width: 100%;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
+        margin-bottom: 0.5rem;
     }
     
     .dataframe th {
@@ -91,7 +112,7 @@ st.markdown(
         text-align: center;
         position: sticky;
         top: 0;
-        padding: 12px 8px;
+        padding: 8px 6px;
     }
     
     .dataframe td {
@@ -99,7 +120,7 @@ st.markdown(
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         font-size: 14px;
         color: white;
-        padding: 12px 8px;
+        padding: 8px 6px;
     }
     
     /* Sidebar */
@@ -115,7 +136,7 @@ st.markdown(
     /* Form elements */
     .stNumberInput, .stTextInput {
         background-color: #2d2d2d;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.25rem;
         width: 100%;
     }
     
@@ -124,7 +145,7 @@ st.markdown(
     .stNumberInput > div > div > input {
         background-color: #2d2d2d;
         color: white;
-        padding: 12px;
+        padding: 8px;
         font-size: 16px;
         border-radius: 8px;
         border: 1px solid #3d3d3d;
@@ -136,8 +157,8 @@ st.markdown(
         background-color: #003366;
         color: white;
         border-radius: 8px;
-        padding: 12px 16px;
-        margin-top: 0.5rem;
+        padding: 8px 12px;
+        margin-top: 0.25rem;
         width: 100%;
         font-size: 16px;
         border: none;
@@ -149,12 +170,12 @@ st.markdown(
         .stNumberInput > div > div > input,
         .stTextInput > div > div > input {
             font-size: 16px;
-            padding: 12px;
+            padding: 8px;
             height: auto;
         }
         
         .stButton > button {
-            padding: 12px 16px;
+            padding: 8px 12px;
             font-size: 16px;
         }
         
@@ -164,7 +185,8 @@ st.markdown(
         
         .stMarkdown {
             font-size: 16px;
-            line-height: 1.5;
+            line-height: 1.4;
+            margin-bottom: 0.25rem;
         }
         
         /* Make sidebar full width on mobile */
@@ -176,13 +198,14 @@ st.markdown(
         
         /* Adjust main content padding */
         .block-container {
-            padding: 1rem;
+            padding: 0.5rem;
         }
         
         /* Make charts responsive */
         .element-container {
             width: 100%;
             overflow-x: auto;
+            margin-bottom: 0.5rem;
         }
     }
     
@@ -190,25 +213,25 @@ st.markdown(
     .stAlert {
         background-color: #2d2d2d;
         border-radius: 8px;
-        padding: 1rem;
-        margin: 0.5rem 0;
+        padding: 0.75rem;
+        margin: 0.25rem 0;
         border: 1px solid #3d3d3d;
     }
     
     .stMarkdown {
         background-color: #2d2d2d;
         border-radius: 8px;
-        padding: 1rem;
-        margin: 0.5rem 0;
-        line-height: 1.5;
+        padding: 0.75rem;
+        margin: 0.25rem 0;
+        line-height: 1.4;
     }
     
     /* Charts */
     .element-container {
         background-color: #2d2d2d;
         border-radius: 8px;
-        padding: 1rem;
-        margin: 0.5rem 0;
+        padding: 0.75rem;
+        margin: 0.25rem 0;
         width: 100%;
         overflow-x: auto;
     }
@@ -228,7 +251,7 @@ st.markdown(
     .stSelectbox > div > div > div {
         background-color: #2d2d2d;
         color: white;
-        padding: 12px;
+        padding: 8px;
         border-radius: 8px;
         border: 1px solid #3d3d3d;
     }
@@ -236,13 +259,13 @@ st.markdown(
     /* Sliders */
     .stSlider > div > div > div {
         background-color: #2d2d2d;
-        padding: 12px;
+        padding: 8px;
     }
     
     /* Checkboxes */
     .stCheckbox > div > div > div {
         background-color: #2d2d2d;
-        padding: 12px;
+        padding: 8px;
     }
     
     /* Download buttons */
@@ -250,8 +273,8 @@ st.markdown(
         background-color: #003366;
         color: white;
         border-radius: 8px;
-        padding: 12px 16px;
-        margin: 0.5rem 0;
+        padding: 8px 12px;
+        margin: 0.25rem 0;
         width: 100%;
         font-size: 16px;
         border: none;
@@ -272,6 +295,36 @@ st.markdown(
     /* Improve scrolling */
     .element-container, .dataframe {
         -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Reduce spacing between form elements */
+    .stForm {
+        margin-bottom: 0.25rem;
+    }
+    
+    /* Reduce spacing in number input widgets */
+    .stNumberInput > div > div > div {
+        padding: 0.25rem;
+    }
+    
+    /* Reduce spacing in text input widgets */
+    .stTextInput > div > div > div {
+        padding: 0.25rem;
+    }
+    
+    /* Reduce spacing in select boxes */
+    .stSelectbox > div > div > div {
+        padding: 0.25rem;
+    }
+    
+    /* Reduce spacing in sliders */
+    .stSlider > div > div > div {
+        padding: 0.25rem;
+    }
+    
+    /* Reduce spacing in checkboxes */
+    .stCheckbox > div > div > div {
+        padding: 0.25rem;
     }
     </style>
 """,
