@@ -158,11 +158,31 @@ st.markdown(
         width: 100%;
     }
     
-    /* Input fields */
+    /* Input fields - iOS specific overrides */
+    @supports (-webkit-touch-callout: none) {
+        /* iOS only */
+        .stTextInput > div > div > input,
+        .stNumberInput > div > div > input {
+            -webkit-text-fill-color: #000000 !important;
+            color: #000000 !important;
+            background-color: #ffffff !important;
+            opacity: 1 !important;
+        }
+        
+        .stTextInput > div > div > input::placeholder,
+        .stNumberInput > div > div > input::placeholder {
+            -webkit-text-fill-color: #666666 !important;
+            color: #666666 !important;
+            opacity: 1 !important;
+        }
+    }
+
+    /* General input styling */
     .stTextInput > div > div > input,
     .stNumberInput > div > div > input {
-        background-color: #ffffff;
-        color: #000000 !important;  /* Force black text for inputs */
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        -webkit-text-fill-color: #000000 !important;
         padding: 12px;
         font-size: 16px;
         border-radius: 8px;
@@ -170,14 +190,25 @@ st.markdown(
         -webkit-appearance: none;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        opacity: 1 !important;
     }
-    
+
     /* Override the universal selector for input elements */
     .stTextInput > div > div > input,
     .stNumberInput > div > div > input,
     .stTextInput > div > div > input::placeholder,
     .stNumberInput > div > div > input::placeholder {
         color: #000000 !important;
+        -webkit-text-fill-color: #000000 !important;
+        opacity: 1 !important;
+    }
+
+    /* Placeholder text */
+    .stTextInput > div > div > input::placeholder,
+    .stNumberInput > div > div > input::placeholder {
+        color: #666666 !important;
+        -webkit-text-fill-color: #666666 !important;
+        opacity: 1 !important;
     }
     
     /* Buttons */
