@@ -212,16 +212,32 @@ st.markdown(
     }
     
     /* Buttons */
-    .stButton > button {
-        background-color: #28a745;  /* Changed to green */
-        color: white;
-        border-radius: 8px;
-        padding: 8px 12px;
-        margin-top: 0.25rem;
-        width: 100%;
-        font-size: 16px;
-        border: none;
-        -webkit-appearance: none;
+    .stButton > button,
+    button[data-baseweb="button"],
+    button[type="submit"] {
+        background-color: #28a745 !important;
+        color: white !important;
+        border-radius: 8px !important;
+        padding: 8px 12px !important;
+        margin-top: 0.25rem !important;
+        width: 100% !important;
+        font-size: 16px !important;
+        border: none !important;
+        -webkit-appearance: none !important;
+    }
+    
+    /* Hover state */
+    .stButton > button:hover,
+    button[data-baseweb="button"]:hover,
+    button[type="submit"]:hover {
+        background-color: #218838 !important;
+    }
+
+    /* Active state */
+    .stButton > button:active,
+    button[data-baseweb="button"]:active,
+    button[type="submit"]:active {
+        background-color: #1e7e34 !important;
     }
     
     /* Mobile-specific styles */
