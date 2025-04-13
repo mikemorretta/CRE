@@ -461,6 +461,55 @@ st.markdown(
     .stCheckbox > div > div > div {
         padding: 0.25rem;
     }
+
+    /* Streamlit input widgets - Force black text */
+    div[data-testid="stNumberInput"] input,
+    div[data-testid="stTextInput"] input {
+        color: #000000 !important;
+        -webkit-text-fill-color: #000000 !important;
+        background-color: #ffffff !important;
+        opacity: 1 !important;
+    }
+
+    /* Input labels */
+    div[data-testid="stNumberInput"] label,
+    div[data-testid="stTextInput"] label {
+        color: #ffffff !important;
+    }
+
+    /* Input containers */
+    div[data-testid="stNumberInput"] > div,
+    div[data-testid="stTextInput"] > div {
+        background-color: #ffffff !important;
+    }
+
+    /* Placeholder text */
+    div[data-testid="stNumberInput"] input::placeholder,
+    div[data-testid="stTextInput"] input::placeholder {
+        color: #666666 !important;
+        -webkit-text-fill-color: #666666 !important;
+        opacity: 1 !important;
+    }
+
+    /* Override any Streamlit default styles */
+    .stTextInput > div > div > input,
+    .stNumberInput > div > div > input {
+        color: #000000 !important;
+        -webkit-text-fill-color: #000000 !important;
+        background-color: #ffffff !important;
+        opacity: 1 !important;
+    }
+
+    /* iOS specific overrides */
+    @supports (-webkit-touch-callout: none) {
+        div[data-testid="stNumberInput"] input,
+        div[data-testid="stTextInput"] input {
+            color: #000000 !important;
+            -webkit-text-fill-color: #000000 !important;
+            background-color: #ffffff !important;
+            opacity: 1 !important;
+        }
+    }
     </style>
 """,
     unsafe_allow_html=True,
