@@ -259,11 +259,40 @@ st.markdown(
         font-size: 16px;
     }
     
-    /* Streamlit specific elements */
-    .stMarkdown h2 {
-        color: #ffffff !important;  /* Force white color for subheaders */
+    /* Streamlit specific elements - Strong overrides */
+    div[data-testid="stMarkdown"] h2 {
+        color: #ffffff !important;
+        font-weight: 700 !important;
     }
 
+    div[data-testid="stDataFrame"] {
+        background-color: #2d2d2d !important;
+    }
+
+    div[data-testid="stDataFrame"] th {
+        background-color: #3d3d3d !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
+    }
+
+    div[data-testid="stDataFrame"] td {
+        color: #ffffff !important;
+    }
+
+    /* Override Streamlit's default text colors */
+    div[data-testid="stMarkdown"] {
+        color: #ffffff !important;
+    }
+
+    div[data-testid="stMarkdown"] p {
+        color: #ffffff !important;
+    }
+
+    div[data-testid="stMarkdown"] strong {
+        color: #ffffff !important;
+    }
+
+    /* Override Streamlit's table styling */
     .stDataFrame {
         background-color: #2d2d2d !important;
     }
@@ -274,6 +303,11 @@ st.markdown(
     }
 
     .stDataFrame td {
+        color: #ffffff !important;
+    }
+
+    /* Force all text to be white */
+    * {
         color: #ffffff !important;
     }
     
