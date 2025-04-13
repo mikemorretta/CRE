@@ -143,12 +143,51 @@ st.markdown(
     
     /* Sidebar */
     .css-1d391kg {
-        background-color: #2d2d2d;
+        background-color: #2d2d2d !important;
         padding: 0.5rem;
         position: sticky;
         top: 0;
         height: 100vh;
         overflow-y: auto;
+        border-right: 1px solid #3d3d3d !important;
+    }
+    
+    /* Sidebar toggle button */
+    .css-1v0mbdj {
+        background-color: #3d3d3d !important;
+        border: 1px solid #4d4d4d !important;
+        color: #ffffff !important;
+    }
+
+    /* Toolbar background */
+    .css-1v0mbdj > div {
+        background-color: #2d2d2d !important;
+    }
+
+    /* Toolbar text and icons */
+    .css-1v0mbdj span,
+    .css-1v0mbdj svg {
+        color: #ffffff !important;
+        fill: #ffffff !important;
+    }
+
+    /* iOS specific toolbar styling */
+    @supports (-webkit-touch-callout: none) {
+        .css-1v0mbdj {
+            background-color: #3d3d3d !important;
+            border: 1px solid #4d4d4d !important;
+            color: #ffffff !important;
+        }
+
+        .css-1v0mbdj > div {
+            background-color: #2d2d2d !important;
+        }
+
+        .css-1v0mbdj span,
+        .css-1v0mbdj svg {
+            color: #ffffff !important;
+            fill: #ffffff !important;
+        }
     }
     
     /* Form elements */
