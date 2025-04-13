@@ -675,7 +675,7 @@ def display_annual_summary(monthly_rents: List[float], inputs: LeaseInputs) -> N
         
         # Convert to DataFrame and filter out rows where all values are zero
         df = pd.DataFrame.from_dict(annual_summary, orient="index").round(2)
-        df.index = df.index.astype(str)  # Ensure index is string type
+        df.index = df.index.astype(str)  # Convert index to strings
         df = df.loc[~(df == 0).all(axis=1)]
         
         # Rename columns
@@ -702,7 +702,7 @@ def display_annual_summary(monthly_rents: List[float], inputs: LeaseInputs) -> N
             "Net Rent / Month": df["Net Rent"].sum() / (12 * len(df))
         }
         
-        # Create total row
+        # Create total row with string index
         total_df = pd.DataFrame([total_data], index=["Total / Weighted Avg"])
         
         # Combine DataFrames
@@ -752,18 +752,14 @@ def display_annual_summary(monthly_rents: List[float], inputs: LeaseInputs) -> N
         # Download buttons
         col1, col2 = st.columns(2)
         with col1:
-            # Create CSV with both annual and monthly data
-            csv_buffer = io.StringIO()
-            export_df.to_csv(csv_buffer)
             st.download_button(
                 "Download as CSV",
-                csv_buffer.getvalue(),
+                export_df.to_csv(),
                 "lease_summary.csv",
                 "text/csv",
-                help="Download both annual and monthly data in CSV format"
+                help="Download annual summary data in CSV format"
             )
         with col2:
-            # Create Excel with both annual and monthly data
             excel_buffer = io.BytesIO()
             with pd.ExcelWriter(excel_buffer, engine="xlsxwriter") as writer:
                 export_df.to_excel(writer, index=True, sheet_name="Annual Summary")
@@ -772,7 +768,7 @@ def display_annual_summary(monthly_rents: List[float], inputs: LeaseInputs) -> N
                 excel_buffer.getvalue(),
                 "lease_summary.xlsx",
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                help="Download both annual and monthly data in Excel format"
+                help="Download annual summary data in Excel format"
             )
     except Exception as e:
         logger.error(f"Error displaying annual summary: {str(e)}")
