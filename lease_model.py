@@ -161,8 +161,8 @@ st.markdown(
     /* Input fields */
     .stTextInput > div > div > input,
     .stNumberInput > div > div > input {
-        background-color: #2d2d2d;
-        color: white;
+        background-color: #ffffff;
+        color: #000000 !important;  /* Force black text for inputs */
         padding: 12px;
         font-size: 16px;
         border-radius: 8px;
@@ -170,6 +170,14 @@ st.markdown(
         -webkit-appearance: none;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+    }
+    
+    /* Override the universal selector for input elements */
+    .stTextInput > div > div > input,
+    .stNumberInput > div > div > input,
+    .stTextInput > div > div > input::placeholder,
+    .stNumberInput > div > div > input::placeholder {
+        color: #000000 !important;
     }
     
     /* Buttons */
@@ -306,7 +314,7 @@ st.markdown(
         color: #ffffff !important;
     }
 
-    /* Force all text to be white */
+    /* Force all text to be white except inputs */
     * {
         color: #ffffff !important;
     }
