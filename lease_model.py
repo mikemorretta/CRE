@@ -703,7 +703,7 @@ def display_annual_summary(monthly_rents: List[float], inputs: LeaseInputs) -> N
         }
         
         # Create total row with string index
-        total_df = pd.DataFrame([total_data], index=["Total / Weighted Avg"])
+        total_df = pd.DataFrame([total_data], index=["Total"])
         
         # Combine DataFrames
         df = pd.concat([df, total_df])
