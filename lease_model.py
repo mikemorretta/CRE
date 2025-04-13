@@ -53,13 +53,16 @@ st.markdown(
     /* Main app styling */
     .stApp {
         background-color: #1e1e1e;
+        max-width: 100%;
+        overflow-x: hidden;
     }
     
     /* Text styling */
     html, body, [class*="css"]  {
-        font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
-        font-size: 15px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        font-size: 16px;
         color: white;
+        -webkit-text-size-adjust: 100%;
     }
     
     /* Headers */
@@ -68,6 +71,7 @@ st.markdown(
         color: white;
         margin-top: 0.5rem;
         margin-bottom: 0.5rem;
+        word-wrap: break-word;
     }
     
     /* Tables */
@@ -77,6 +81,7 @@ st.markdown(
         border-radius: 4px;
         width: 100%;
         overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
     
     .dataframe th {
@@ -86,25 +91,32 @@ st.markdown(
         text-align: center;
         position: sticky;
         top: 0;
+        padding: 12px 8px;
     }
     
     .dataframe td {
         text-align: right;
-        font-family: monospace;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         font-size: 14px;
         color: white;
+        padding: 12px 8px;
     }
     
     /* Sidebar */
     .css-1d391kg {
         background-color: #2d2d2d;
         padding: 0.5rem;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
     }
     
     /* Form elements */
     .stNumberInput, .stTextInput {
         background-color: #2d2d2d;
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.5rem;
+        width: 100%;
     }
     
     /* Input fields */
@@ -112,61 +124,93 @@ st.markdown(
     .stNumberInput > div > div > input {
         background-color: #2d2d2d;
         color: white;
-        padding: 0.25rem;
+        padding: 12px;
+        font-size: 16px;
+        border-radius: 8px;
+        border: 1px solid #3d3d3d;
+        -webkit-appearance: none;
     }
     
     /* Buttons */
     .stButton > button {
         background-color: #003366;
         color: white;
-        border-radius: 4px;
-        padding: 0.4em 1em;
+        border-radius: 8px;
+        padding: 12px 16px;
         margin-top: 0.5rem;
         width: 100%;
+        font-size: 16px;
+        border: none;
+        -webkit-appearance: none;
     }
     
     /* Mobile-specific styles */
     @media (max-width: 768px) {
         .stNumberInput > div > div > input,
         .stTextInput > div > div > input {
-            font-size: 16px; /* Larger font for better touch targets */
+            font-size: 16px;
+            padding: 12px;
+            height: auto;
         }
         
         .stButton > button {
-            padding: 0.6em 1em; /* Larger touch targets */
+            padding: 12px 16px;
+            font-size: 16px;
         }
         
         .dataframe {
-            font-size: 14px; /* Slightly smaller font for tables */
+            font-size: 14px;
         }
         
         .stMarkdown {
-            font-size: 16px; /* Larger font for better readability */
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        /* Make sidebar full width on mobile */
+        .css-1d391kg {
+            width: 100%;
+            height: auto;
+            position: relative;
+        }
+        
+        /* Adjust main content padding */
+        .block-container {
+            padding: 1rem;
+        }
+        
+        /* Make charts responsive */
+        .element-container {
+            width: 100%;
+            overflow-x: auto;
         }
     }
     
     /* Alerts and info boxes */
     .stAlert {
         background-color: #2d2d2d;
-        border-radius: 4px;
-        padding: 0.5rem;
+        border-radius: 8px;
+        padding: 1rem;
         margin: 0.5rem 0;
         border: 1px solid #3d3d3d;
     }
     
     .stMarkdown {
         background-color: #2d2d2d;
-        border-radius: 4px;
-        padding: 0.5rem;
+        border-radius: 8px;
+        padding: 1rem;
         margin: 0.5rem 0;
+        line-height: 1.5;
     }
     
     /* Charts */
     .element-container {
         background-color: #2d2d2d;
-        border-radius: 4px;
-        padding: 0.5rem;
+        border-radius: 8px;
+        padding: 1rem;
         margin: 0.5rem 0;
+        width: 100%;
+        overflow-x: auto;
     }
     
     /* Hover effects */
@@ -184,59 +228,50 @@ st.markdown(
     .stSelectbox > div > div > div {
         background-color: #2d2d2d;
         color: white;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #3d3d3d;
     }
     
     /* Sliders */
     .stSlider > div > div > div {
         background-color: #2d2d2d;
+        padding: 12px;
     }
     
     /* Checkboxes */
     .stCheckbox > div > div > div {
         background-color: #2d2d2d;
+        padding: 12px;
     }
     
-    /* Reduce spacing in sidebar */
-    .css-1d391kg {
-        padding: 0.25rem;
+    /* Download buttons */
+    .stDownloadButton > button {
+        background-color: #003366;
+        color: white;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin: 0.5rem 0;
+        width: 100%;
+        font-size: 16px;
+        border: none;
+        -webkit-appearance: none;
     }
     
-    /* Reduce spacing in main content */
-    .block-container {
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
+    /* Improve touch targets */
+    button, input, select, textarea {
+        touch-action: manipulation;
     }
     
-    /* Reduce spacing between form elements */
-    .stForm {
-        margin-bottom: 0.25rem;
+    /* Prevent text selection */
+    .stButton > button, .stDownloadButton > button {
+        user-select: none;
+        -webkit-user-select: none;
     }
     
-    /* Reduce spacing in number input widgets */
-    .stNumberInput > div > div > div {
-        padding: 0.25rem;
-    }
-    
-    /* Reduce spacing in text input widgets */
-    .stTextInput > div > div > div {
-        padding: 0.25rem;
-    }
-    
-    /* Reduce spacing in select boxes */
-    .stSelectbox > div > div > div {
-        padding: 0.25rem;
-    }
-    
-    /* Reduce spacing in sliders */
-    .stSlider > div > div > div {
-        padding: 0.25rem;
-    }
-    
-    /* Reduce spacing in checkboxes */
-    .stCheckbox > div > div > div {
-        padding: 0.25rem;
+    /* Improve scrolling */
+    .element-container, .dataframe {
+        -webkit-overflow-scrolling: touch;
     }
     </style>
 """,
@@ -808,7 +843,6 @@ def display_annual_summary(monthly_rents: List[float], inputs: LeaseInputs) -> N
             )
     except Exception as e:
         logger.error(f"Error displaying annual summary: {str(e)}")
-        st.error("Error displaying annual summary. Please check your inputs.")
 
 def main():
     """
