@@ -761,10 +761,9 @@ def display_annual_summary(monthly_rents: List[float], inputs: LeaseInputs) -> N
         # Create annual summary
         annual_summary = summarize_annual_rent(monthly_rents, inputs)
         
-        # Convert to DataFrame and filter out rows where all values are zero
+        # Convert to DataFrame
         df = pd.DataFrame.from_dict(annual_summary, orient="index").round(2)
         df.index = df.index.astype(str)  # Convert index to strings
-        df = df.loc[~(df == 0).all(axis=1)]
         
         # Rename columns
         df = df.rename(
@@ -804,67 +803,38 @@ def display_annual_summary(monthly_rents: List[float], inputs: LeaseInputs) -> N
         # Display styled dataframe
         st.subheader("Annual Summary")
         
-        # Convert DataFrame to HTML with custom styling
-        html = df.style.set_table_styles(
-            [
-                {
-                    "selector": "th",
-                    "props": [
-                        ("text-align", "center"),
-                        ("font-weight", "bold"),
-                        ("background-color", "#3d3d3d"),
-                        ("color", "white"),
-                        ("padding", "8px"),
-                    ],
-                },
-                {
-                    "selector": "td",
-                    "props": [
-                        ("text-align", "right"),
-                        ("white-space", "nowrap"),
-                        ("padding", "8px"),
-                    ],
-                },
-                {
-                    "selector": "tr:last-child",
-                    "props": [
-                        ("font-weight", "bold"),
-                        ("background-color", "#3d3d3d"),
-                        ("color", "white"),
-                    ],
-                },
-                {
-                    "selector": "tr:hover",
-                    "props": [("background-color", "#4d4d4d")],
-                },
-            ],
-            overwrite=False,
-        ).set_properties(**{
-            'background-color': '#2d2d2d',
-            'color': 'white',
-            'border': '1px solid #3d3d3d',
-        }).to_html()
-
-        # Add custom CSS for the table
-        st.markdown("""
-            <style>
-                .dataframe {
-                    width: 100%;
-                    border-collapse: collapse;
-                    margin: 1em 0;
-                }
-                .dataframe th, .dataframe td {
-                    border: 1px solid #3d3d3d;
-                }
-                .dataframe tr:last-child {
-                    font-weight: bold;
-                    background-color: #3d3d3d;
-                }
-            </style>
-        """, unsafe_allow_html=True)
-        
-        # Display the HTML table
-        st.markdown(html, unsafe_allow_html=True)
+        # Display the table using st.dataframe instead of HTML
+        st.dataframe(
+            df,
+            use_container_width=True,
+            hide_index=False,
+            column_config={
+                "Gross Rent": st.column_config.NumberColumn(
+                    "Gross Rent",
+                    format="$%.2f"
+                ),
+                "Free Rent Abatement": st.column_config.NumberColumn(
+                    "Free Rent Abatement",
+                    format="$%.2f"
+                ),
+                "Net Rent": st.column_config.NumberColumn(
+                    "Net Rent",
+                    format="$%.2f"
+                ),
+                "Gross Rent PSF": st.column_config.NumberColumn(
+                    "Gross Rent PSF",
+                    format="$%.2f"
+                ),
+                "Net Rent PSF": st.column_config.NumberColumn(
+                    "Net Rent PSF",
+                    format="$%.2f"
+                ),
+                "Net Rent / Month": st.column_config.NumberColumn(
+                    "Net Rent / Month",
+                    format="$%.2f"
+                )
+            }
+        )
 
         # Create export data
         export_df = df.copy()
@@ -896,6 +866,7 @@ def display_annual_summary(monthly_rents: List[float], inputs: LeaseInputs) -> N
             )
     except Exception as e:
         logger.error(f"Error displaying annual summary: {str(e)}")
+        st.error(f"Error displaying annual summary: {str(e)}")
 
 def main():
     """
