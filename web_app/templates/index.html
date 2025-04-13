@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lease Modeling Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        :root {
+            --primary-bg: #ffffff;
+            --secondary-bg: #f5f5f7;
+            --accent-color: #0071e3;
+            --accent-hover: #0077ed;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --border-color: #d2d2d7;
+            --card-bg: #ffffff;
+            --success-color: #34c759;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+            text-align: center;
+            letter-spacing: -0.5px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--shadow-color);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.3px;
+        }
+
+        .form-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            background-color: var(--primary-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.875rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            background-color: var(--primary-bg);
+            border-color: var(--accent-color);
+            color: var(--text-primary);
+            box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.2);
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            border: none;
+            padding: 0.875rem 1.75rem;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+            letter-spacing: -0.3px;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: var(--primary-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.875rem 1.75rem;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+            letter-spacing: -0.3px;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary-bg);
+            color: var(--text-primary);
+            transform: translateY(-1px);
+        }
+
+        #plot-container {
+            width: 100%;
+            height: 600px;
+            margin: 2rem 0;
+            background-color: var(--primary-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .metric-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .metric-value {
+            color: var(--text-primary);
+            font-weight: 600;
+            text-align: right;
+            font-size: 1.1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 1.5rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        th {
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--secondary-bg);
+            font-size: 0.9rem;
+        }
+
+        td {
+            color: var(--text-primary);
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: var(--secondary-bg);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .card {
+                margin-bottom: 1.5rem;
+            }
+
+            #plot-container {
+                height: 400px;
+                padding: 1rem;
+            }
+
+            .form-control, .btn-primary, .btn-secondary {
+                padding: 0.75rem 1.25rem;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--secondary-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        /* Input focus effects */
+        .form-control:focus {
+            transform: translateY(-1px);
+        }
+
+        /* Success state */
+        .success-message {
+            color: var(--success-color);
+            font-weight: 500;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Apple-style table header */
+        .table-header {
+            background-color: var(--secondary-bg);
+            padding: 1.5rem;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Apple-style metrics */
+        .metrics-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background-color: var(--secondary-bg);
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background-color: var(--primary-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .input-section {
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .input-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .toggle-button {
+            padding: 8px 16px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-button:hover {
+            background-color: #495057;
+        }
+
+        .input-form {
+            transition: all 0.3s ease;
+        }
+
+        .input-form.hidden {
+            display: none;
+        }
+
+        .card-header {
+            background-color: var(--secondary-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem;
+        }
+
+        .card-header .btn {
+            padding: 0.25rem 0.5rem;
+        }
+
+        .card-body {
+            transition: all 0.3s ease;
+        }
+
+        .card-body.collapsed {
+            display: none;
+        }
+
+        .bi-chevron-up {
+            transition: transform 0.3s ease;
+        }
+
+        .collapsed .bi-chevron-up {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lease Modeling Dashboard</h1>
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Input Parameters</h5>
+                        <button id="toggleInputs" class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-chevron-up"></i>
+                        </button>
+                    </div>
+                    <div id="inputForm" class="card-body">
+                        <form id="leaseForm">
+                            <div class="mb-3">
+                                <label for="year1_rent_psf" class="form-label">Year 1 Rent PSF</label>
+                                <input type="number" class="form-control" id="year1_rent_psf" value="50.00" step="0.01">
+                            </div>
+                            <div class="mb-3">
+                                <label for="lease_term_months" class="form-label">Lease Term (Months)</label>
+                                <input type="number" class="form-control" id="lease_term_months" value="120">
+                            </div>
+                            <div class="mb-3">
+                                <label for="annual_escalation_pct" class="form-label">Annual Escalation (%)</label>
+                                <input type="number" class="form-control" id="annual_escalation_pct" value="3.00" step="0.01">
+                            </div>
+                            <div class="mb-3">
+                                <label for="rentable_sf" class="form-label">Rentable SF</label>
+                                <input type="number" class="form-control" id="rentable_sf" value="10000">
+                            </div>
+                            <div class="mb-3">
+                                <label for="free_rent_months" class="form-label">Free Rent (Months)</label>
+                                <input type="number" class="form-control" id="free_rent_months" value="3">
+                            </div>
+                            <div class="mb-3">
+                                <label for="ti_psf" class="form-label">TI Allowance ($/SF)</label>
+                                <input type="number" class="form-control" id="ti_psf" value="50.00" step="0.01">
+                            </div>
+                            <div class="mb-3">
+                                <label for="lc_psf" class="form-label">Leasing Commission ($/SF)</label>
+                                <input type="number" class="form-control" id="lc_psf" value="20.00" step="0.01">
+                            </div>
+                            <div class="mb-3">
+                                <label for="discount_rate" class="form-label">Discount Rate (%)</label>
+                                <input type="number" class="form-control" id="discount_rate" value="8.00" step="0.01">
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Calculate</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-8">
+                <div class="metrics-container">
+                    <div class="metric">
+                        <div class="metric-label">Total Cost</div>
+                        <div class="metric-value" id="total-cost">$0</div>
+                        <div class="metric-value" id="total-cost-psf">$0/SF</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">NPV</div>
+                        <div class="metric-value" id="npv">$0</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Payback Period</div>
+                        <div class="metric-value" id="payback-period">N/A</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Total TI</div>
+                        <div class="metric-value" id="total-ti">$0</div>
+                        <div class="metric-value" id="total-ti-psf">$0/SF</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Total LC</div>
+                        <div class="metric-value" id="total-lc">$0</div>
+                        <div class="metric-value" id="total-lc-psf">$0/SF</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Payment Schedule</h5>
+                        <div id="plot-container"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="card-title mb-0">Annual Summary</h5>
+                            <button class="btn btn-secondary" onclick="exportToCSV()">Export CSV</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Year</th>
+                                        <th>Gross Rent</th>
+                                        <th>Free Rent Abatement</th>
+                                        <th>Net Rent</th>
+                                        <th>Gross Rent PSF</th>
+                                        <th>Net Rent PSF</th>
+                                        <th>Net Rent / Month</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="annual_summary">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let formData = {};
+        const requiredFields = ['year1_rent_psf', 'lease_term_months', 'annual_escalation_pct', 
+                              'rentable_sf', 'free_rent_months', 'ti_psf', 'lc_psf', 'discount_rate'];
+
+        // Utility functions
+        function formatNumber(value, decimals = 0) {
+            if (value === null || value === undefined || isNaN(value)) return '0';
+            return new Intl.NumberFormat('en-US', {
+                minimumFractionDigits: decimals,
+                maximumFractionDigits: decimals
+            }).format(value);
+        }
+
+        function parseNumber(value) {
+            if (!value) return NaN;
+            return parseFloat(value.toString().replace(/,/g, '').replace('%', ''));
+        }
+
+        function formatCurrency(value) {
+            if (isNaN(value)) return '$0';
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(value);
+        }
+
+        function formatPSF(value) {
+            if (isNaN(value)) return '$0.00/SF';
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(value) + '/SF';
+        }
+
+        // Initialize inputs with default values
+        function initializeInputs() {
+            const defaultValues = {
+                'rentable_sf': 10000,
+                'annual_escalation_pct': 3.00,
+                'year1_rent_psf': 50.00,
+                'lease_term_months': 120,
+                'free_rent_months': 3,
+                'ti_psf': 50.00,
+                'lc_psf': 20.00,
+                'discount_rate': 8.00
+            };
+
+            requiredFields.forEach(field => {
+                const input = document.getElementById(field);
+                if (input) {
+                    input.value = defaultValues[field];
+                    formData[field] = defaultValues[field];
+                }
+            });
+        }
+
+        // Setup input handling
+        function setupInputHandling() {
+            document.querySelectorAll('.form-control').forEach(input => {
+                const id = input.id;
+                
+                // Store initial value in formData
+                const initialValue = parseNumber(input.value);
+                if (!isNaN(initialValue)) {
+                    formData[id] = initialValue;
+                }
+                
+                // Only handle input events to update formData
+                input.addEventListener('input', function() {
+                    const value = parseNumber(this.value);
+                    if (!isNaN(value)) {
+                        formData[id] = value;
+                    }
+                });
+            });
+        }
+
+        // Get form data
+        function getFormData() {
+            const data = {};
+            requiredFields.forEach(field => {
+                if (field in formData) {
+                    data[field] = formData[field];
+                }
+            });
+            return data;
+        }
+
+        // Initialize plot
+        function initializePlot() {
+            const plotContainer = document.getElementById('plot-container');
+            const emptyPlot = {
+                data: [{
+                    x: [],
+                    y: [],
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: 'Annual Rent PSF'
+                }],
+                layout: {
+                    title: '',
+                    xaxis: {
+                        title: 'Lease Year',
+                        showgrid: true,
+                        gridcolor: '#e0e0e0',
+                        zeroline: true,
+                        zerolinecolor: '#e0e0e0'
+                    },
+                    yaxis: {
+                        title: 'Rent PSF',
+                        showgrid: true,
+                        gridcolor: '#e0e0e0',
+                        zeroline: true,
+                        zerolinecolor: '#e0e0e0'
+                    },
+                    plot_bgcolor: 'white',
+                    paper_bgcolor: 'white',
+                    font: {
+                        color: '#1d1d1f'
+                    },
+                    margin: {
+                        l: 50,
+                        r: 50,
+                        t: 30,
+                        b: 50,
+                        pad: 4
+                    }
+                }
+            };
+            Plotly.newPlot(plotContainer, emptyPlot.data, emptyPlot.layout);
+        }
+
+        // Calculate lease
+        function calculateLease() {
+            const data = getFormData();
+            const missingFields = requiredFields.filter(field => !(field in data));
+            
+            if (missingFields.length > 0) {
+                console.log('Current form data:', data);
+                console.log('Missing fields:', missingFields);
+                alert(`Please fill in all required fields: ${missingFields.join(', ')}`);
+                return;
+            }
+
+            fetch('/calculate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateUI(data);
+                } else {
+                    console.error('Error details:', data.details);
+                    alert(`Error: ${data.error}\n\nPlease check the console for more details.`);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while calculating the lease payments.');
+            });
+        }
+
+        // Update UI with calculation results
+        function updateUI(data) {
+            // Update metrics
+            document.getElementById('total-cost').textContent = formatCurrency(data.lease_summary.total_cost);
+            document.getElementById('total-cost-psf').textContent = formatPSF(data.lease_summary.total_cost_psf);
+            document.getElementById('npv').textContent = formatCurrency(data.lease_summary.npv);
+            document.getElementById('payback-period').textContent = data.lease_summary.payback_month ? 
+                `${data.lease_summary.payback_month} months` : 'N/A';
+            document.getElementById('total-ti').textContent = formatCurrency(data.lease_summary.total_ti);
+            document.getElementById('total-ti-psf').textContent = formatPSF(data.lease_summary.total_ti_psf);
+            document.getElementById('total-lc').textContent = formatCurrency(data.lease_summary.total_lc);
+            document.getElementById('total-lc-psf').textContent = formatPSF(data.lease_summary.total_lc_psf);
+
+            // Update plot with adjusted margins
+            const plotContainer = document.getElementById('plot-container');
+            const plotData = data.plot.data;
+            const plotLayout = {
+                ...data.plot.layout,
+                margin: {
+                    l: 50,
+                    r: 50,
+                    t: 30,
+                    b: 50,
+                    pad: 4
+                }
+            };
+            Plotly.newPlot(plotContainer, plotData, plotLayout);
+
+            // Update annual summary table
+            const tbody = document.getElementById('annual_summary');
+            tbody.innerHTML = '';
+            Object.entries(data.annual_summary).forEach(([year, data]) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${year}</td>
+                    <td>${formatCurrency(data.gross)}</td>
+                    <td>${formatCurrency(data.abatement)}</td>
+                    <td>${formatCurrency(data.net)}</td>
+                    <td>${formatCurrency(data.gross_psf)}</td>
+                    <td>${formatCurrency(data.net_psf)}</td>
+                    <td>${formatCurrency(data.net_per_month)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Export to CSV
+        function exportToCSV() {
+            const data = getFormData();
+            const missingFields = requiredFields.filter(field => !(field in data));
+            
+            if (missingFields.length > 0) {
+                alert(`Please fill in all required fields: ${missingFields.join(', ')}`);
+                return;
+            }
+
+            fetch('/export_csv', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'lease_payment_schedule.csv';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while exporting the CSV file.');
+            });
+        }
+
+        // Initialize everything when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('leaseForm');
+            const toggleButton = document.getElementById('toggleInputs');
+            const inputForm = document.getElementById('inputForm');
+            const cardHeader = toggleButton.closest('.card-header');
+
+            // Initialize components
+            initializeInputs();
+            setupInputHandling();
+            initializePlot();
+
+            // Setup event listeners
+            toggleButton.addEventListener('click', function() {
+                inputForm.classList.toggle('collapsed');
+                cardHeader.classList.toggle('collapsed');
+                toggleButton.querySelector('i').classList.toggle('bi-chevron-up');
+                toggleButton.querySelector('i').classList.toggle('bi-chevron-down');
+            });
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                calculateLease();
+            });
+
+            // Calculate initial values after a short delay
+            setTimeout(() => {
+                calculateLease();
+            }, 500);
+        });
+    </script>
+</body>
+</html>
