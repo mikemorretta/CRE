@@ -716,7 +716,7 @@ def display_annual_summary(monthly_rents: List[float], inputs: LeaseInputs) -> N
         # Display styled dataframe
         st.subheader("Annual Summary")
         
-        # Convert DataFrame to HTML for display
+        # Convert DataFrame to HTML with custom styling
         html = df.style.set_table_styles(
             [
                 {
@@ -725,20 +725,55 @@ def display_annual_summary(monthly_rents: List[float], inputs: LeaseInputs) -> N
                         ("text-align", "center"),
                         ("font-weight", "bold"),
                         ("background-color", "#3d3d3d"),
+                        ("color", "white"),
+                        ("padding", "8px"),
                     ],
                 },
                 {
                     "selector": "td",
-                    "props": [("text-align", "right"), ("white-space", "nowrap")],
+                    "props": [
+                        ("text-align", "right"),
+                        ("white-space", "nowrap"),
+                        ("padding", "8px"),
+                    ],
                 },
                 {
                     "selector": "tr:last-child",
-                    "props": [("font-weight", "bold"), ("background-color", "#3d3d3d")],
+                    "props": [
+                        ("font-weight", "bold"),
+                        ("background-color", "#3d3d3d"),
+                        ("color", "white"),
+                    ],
                 },
-                {"selector": "tr:hover", "props": [("background-color", "#4d4d4d")]},
+                {
+                    "selector": "tr:hover",
+                    "props": [("background-color", "#4d4d4d")],
+                },
             ],
             overwrite=False,
-        ).to_html()
+        ).set_properties(**{
+            'background-color': '#2d2d2d',
+            'color': 'white',
+            'border': '1px solid #3d3d3d',
+        }).to_html()
+
+        # Add custom CSS for the table
+        st.markdown("""
+            <style>
+                .dataframe {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 1em 0;
+                }
+                .dataframe th, .dataframe td {
+                    border: 1px solid #3d3d3d;
+                }
+                .dataframe tr:last-child {
+                    font-weight: bold;
+                    background-color: #3d3d3d;
+                }
+            </style>
+        """, unsafe_allow_html=True)
         
         # Display the HTML table
         st.markdown(html, unsafe_allow_html=True)
