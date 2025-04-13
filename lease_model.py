@@ -478,15 +478,33 @@ st.markdown(
     
     /* Download buttons */
     .stDownloadButton > button {
-        background-color: #003366;
-        color: white;
-        border-radius: 8px;
-        padding: 8px 12px;
-        margin: 0.25rem 0;
-        width: 100%;
-        font-size: 16px;
-        border: none;
-        -webkit-appearance: none;
+        background-color: #3d3d3d !important;
+        color: #ffffff !important;
+        border-radius: 8px !important;
+        padding: 8px 12px !important;
+        margin: 0.25rem 0 !important;
+        width: 100% !important;
+        font-size: 16px !important;
+        border: 1px solid #4d4d4d !important;
+        -webkit-appearance: none !important;
+    }
+    
+    /* iOS specific download button styling */
+    @supports (-webkit-touch-callout: none) {
+        .stDownloadButton > button {
+            background-color: #3d3d3d !important;
+            color: #ffffff !important;
+            border: 1px solid #4d4d4d !important;
+        }
+
+        .stDownloadButton > button:hover {
+            background-color: #4d4d4d !important;
+        }
+    }
+
+    /* Make sure download button text is visible */
+    .stDownloadButton > button span {
+        color: #ffffff !important;
     }
     
     /* Improve touch targets */
