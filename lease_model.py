@@ -85,7 +85,7 @@ st.markdown(
     html, body, [class*="css"]  {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         font-size: 16px;
-        color: white;
+        color: #ffffff;
         -webkit-text-size-adjust: 100%;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -97,7 +97,7 @@ st.markdown(
     /* Headers */
     h1, h2, h3, h4 {
         font-weight: 700;
-        color: white;
+        color: #ffffff;
         margin-top: 0.5rem;
         margin-bottom: 0.5rem;
         word-wrap: break-word;
@@ -120,7 +120,7 @@ st.markdown(
     
     .dataframe th {
         background-color: #3d3d3d;
-        color: white;
+        color: #ffffff;
         font-weight: 600;
         text-align: center;
         position: sticky;
@@ -135,7 +135,7 @@ st.markdown(
         text-align: right;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         font-size: 15px;
-        color: white;
+        color: #ffffff;
         padding: 12px 8px;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -261,7 +261,7 @@ st.markdown(
     
     /* Improve contrast for better readability */
     .stMarkdown, .stAlert, .dataframe {
-        color: rgba(255, 255, 255, 0.95);
+        color: #ffffff;
     }
     
     /* Improve button text readability */
