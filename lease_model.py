@@ -1138,7 +1138,12 @@ def main():
                 format="%.2f"
             )
             
-            submitted = st.form_submit_button("Update Model")
+            # Update the form submit button with custom styling
+            submitted = st.form_submit_button(
+                "Update Model",
+                type="primary",  # This will make the button green
+                use_container_width=True
+            )
             
             if submitted:
                 inputs = LeaseInputs(
