@@ -1172,15 +1172,28 @@ def display_annual_summary(monthly_rents: List[float], inputs: LeaseInputs) -> N
         for col in numeric_columns:
             export_df[col] = export_df[col].str.replace('$', '').str.replace(',', '').astype(float)
 
-        # Download button for CSV only
-        st.download_button(
-            "Download as CSV",
-            export_df.to_csv(),
-            "lease_summary.csv",
-            "text/csv",
-            help="Download annual summary data in CSV format",
-            type="secondary"  # This will make it a gray button
-        )
+        # Create a custom styled download button
+        csv = export_df.to_csv()
+        st.markdown(f"""
+            <a href="data:text/csv;charset=utf-8,{csv}" download="lease_summary.csv" style="
+                display: inline-block;
+                padding: 8px 16px;
+                background-color: #3d3d3d;
+                color: white;
+                text-decoration: none;
+                border-radius: 8px;
+                border: 1px solid #4d4d4d;
+                font-size: 16px;
+                text-align: center;
+                width: 100%;
+                box-sizing: border-box;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+            ">
+                Download as CSV
+            </a>
+        """, unsafe_allow_html=True)
     except Exception as e:
         logger.error(f"Error displaying annual summary: {str(e)}")
         st.error(f"Error displaying annual summary: {str(e)}")
