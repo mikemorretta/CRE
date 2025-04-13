@@ -715,32 +715,33 @@ def display_annual_summary(monthly_rents: List[float], inputs: LeaseInputs) -> N
 
         # Display styled dataframe
         st.subheader("Annual Summary")
-        st.dataframe(
-            df.style.set_table_styles(
-                [
-                    {
-                        "selector": "th",
-                        "props": [
-                            ("text-align", "center"),
-                            ("font-weight", "bold"),
-                            ("background-color", "#3d3d3d"),
-                        ],
-                    },
-                    {
-                        "selector": "td",
-                        "props": [("text-align", "right"), ("white-space", "nowrap")],
-                    },
-                    {
-                        "selector": "tr:last-child",
-                        "props": [("font-weight", "bold"), ("background-color", "#3d3d3d")],
-                    },
-                    {"selector": "tr:hover", "props": [("background-color", "#4d4d4d")]},
-                ],
-                overwrite=False,
-            ),
-            use_container_width=True,
-            height=(len(df) + 1) * 35 + 100
-        )
+        
+        # Convert DataFrame to HTML for display
+        html = df.style.set_table_styles(
+            [
+                {
+                    "selector": "th",
+                    "props": [
+                        ("text-align", "center"),
+                        ("font-weight", "bold"),
+                        ("background-color", "#3d3d3d"),
+                    ],
+                },
+                {
+                    "selector": "td",
+                    "props": [("text-align", "right"), ("white-space", "nowrap")],
+                },
+                {
+                    "selector": "tr:last-child",
+                    "props": [("font-weight", "bold"), ("background-color", "#3d3d3d")],
+                },
+                {"selector": "tr:hover", "props": [("background-color", "#4d4d4d")]},
+            ],
+            overwrite=False,
+        ).to_html()
+        
+        # Display the HTML table
+        st.markdown(html, unsafe_allow_html=True)
 
         # Create export data
         export_df = df.copy()
