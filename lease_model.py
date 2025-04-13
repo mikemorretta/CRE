@@ -55,6 +55,8 @@ st.markdown(
         background-color: #1e1e1e;
         max-width: 100%;
         overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
     
     /* Remove top padding and margin */
@@ -75,6 +77,8 @@ st.markdown(
         margin-top: 0rem;
         margin-bottom: 0.5rem;
         padding-top: 0rem;
+        font-weight: 700;
+        letter-spacing: -0.5px;
     }
     
     /* Text styling */
@@ -83,15 +87,23 @@ st.markdown(
         font-size: 16px;
         color: white;
         -webkit-text-size-adjust: 100%;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+        font-weight: 400;
+        line-height: 1.5;
     }
     
     /* Headers */
     h1, h2, h3, h4 {
-        font-weight: 600;
+        font-weight: 700;
         color: white;
         margin-top: 0.5rem;
         margin-bottom: 0.5rem;
         word-wrap: break-word;
+        letter-spacing: -0.5px;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
     
     /* Tables */
@@ -103,24 +115,30 @@ st.markdown(
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         margin-bottom: 0.5rem;
+        font-size: 15px;
     }
     
     .dataframe th {
         background-color: #3d3d3d;
         color: white;
-        font-weight: bold;
+        font-weight: 600;
         text-align: center;
         position: sticky;
         top: 0;
-        padding: 8px 6px;
+        padding: 12px 8px;
+        font-size: 15px;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
     
     .dataframe td {
         text-align: right;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        font-size: 14px;
+        font-size: 15px;
         color: white;
-        padding: 8px 6px;
+        padding: 12px 8px;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
     
     /* Sidebar */
@@ -145,11 +163,13 @@ st.markdown(
     .stNumberInput > div > div > input {
         background-color: #2d2d2d;
         color: white;
-        padding: 8px;
+        padding: 12px;
         font-size: 16px;
         border-radius: 8px;
         border: 1px solid #3d3d3d;
         -webkit-appearance: none;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
     
     /* Buttons */
@@ -167,26 +187,36 @@ st.markdown(
     
     /* Mobile-specific styles */
     @media (max-width: 768px) {
+        html, body, [class*="css"] {
+            font-size: 17px;
+            line-height: 1.6;
+        }
+        
         .stNumberInput > div > div > input,
         .stTextInput > div > div > input {
-            font-size: 16px;
-            padding: 8px;
+            font-size: 17px;
+            padding: 14px;
             height: auto;
         }
         
-        .stButton > button {
-            padding: 8px 12px;
+        .dataframe {
             font-size: 16px;
         }
         
-        .dataframe {
-            font-size: 14px;
+        .dataframe th, .dataframe td {
+            font-size: 16px;
+            padding: 14px 10px;
         }
         
         .stMarkdown {
-            font-size: 16px;
-            line-height: 1.4;
+            font-size: 17px;
+            line-height: 1.6;
             margin-bottom: 0.25rem;
+        }
+        
+        h1, h2, h3, h4 {
+            font-size: 1.5em;
+            line-height: 1.3;
         }
         
         /* Make sidebar full width on mobile */
@@ -198,7 +228,7 @@ st.markdown(
         
         /* Adjust main content padding */
         .block-container {
-            padding: 0.5rem;
+            padding: 1rem;
         }
         
         /* Make charts responsive */
@@ -213,17 +243,31 @@ st.markdown(
     .stAlert {
         background-color: #2d2d2d;
         border-radius: 8px;
-        padding: 0.75rem;
+        padding: 1rem;
         margin: 0.25rem 0;
         border: 1px solid #3d3d3d;
+        font-size: 16px;
+        line-height: 1.6;
     }
     
     .stMarkdown {
         background-color: #2d2d2d;
         border-radius: 8px;
-        padding: 0.75rem;
+        padding: 1rem;
         margin: 0.25rem 0;
-        line-height: 1.4;
+        line-height: 1.6;
+        font-size: 16px;
+    }
+    
+    /* Improve contrast for better readability */
+    .stMarkdown, .stAlert, .dataframe {
+        color: rgba(255, 255, 255, 0.95);
+    }
+    
+    /* Improve button text readability */
+    .stButton > button, .stDownloadButton > button {
+        font-weight: 600;
+        letter-spacing: 0.3px;
     }
     
     /* Charts */
