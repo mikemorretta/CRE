@@ -213,7 +213,7 @@ st.markdown(
     
     /* Buttons */
     .stButton > button {
-        background-color: #003366;
+        background-color: #28a745;  /* Changed to green */
         color: white;
         border-radius: 8px;
         padding: 8px 12px;
@@ -1027,27 +1027,14 @@ def display_annual_summary(monthly_rents: List[float], inputs: LeaseInputs) -> N
         for col in numeric_columns:
             export_df[col] = export_df[col].str.replace('$', '').str.replace(',', '').astype(float)
 
-        # Download buttons
-        col1, col2 = st.columns(2)
-        with col1:
-            st.download_button(
-                "Download as CSV",
-                export_df.to_csv(),
-                "lease_summary.csv",
-                "text/csv",
-                help="Download annual summary data in CSV format"
-            )
-        with col2:
-            excel_buffer = io.BytesIO()
-            with pd.ExcelWriter(excel_buffer, engine="xlsxwriter") as writer:
-                export_df.to_excel(writer, index=True, sheet_name="Annual Summary")
-            st.download_button(
-                "Download as Excel",
-                excel_buffer.getvalue(),
-                "lease_summary.xlsx",
-                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                help="Download annual summary data in Excel format"
-            )
+        # Download button for CSV only
+        st.download_button(
+            "Download as CSV",
+            export_df.to_csv(),
+            "lease_summary.csv",
+            "text/csv",
+            help="Download annual summary data in CSV format"
+        )
     except Exception as e:
         logger.error(f"Error displaying annual summary: {str(e)}")
         st.error(f"Error displaying annual summary: {str(e)}")
