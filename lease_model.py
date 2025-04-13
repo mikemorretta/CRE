@@ -565,6 +565,60 @@ st.markdown(
             opacity: 1 !important;
         }
     }
+
+    /* Top toolbar and toggle button styling */
+    div[data-testid="stToolbar"] {
+        background-color: #1a1a1a !important;
+        border-bottom: 1px solid #3d3d3d !important;
+    }
+
+    /* Toolbar toggle button */
+    button[data-testid="baseButton-headerNoPadding"] {
+        background-color: #3d3d3d !important;
+        border: 1px solid #4d4d4d !important;
+        color: #ffffff !important;
+    }
+
+    /* Toolbar icons and text */
+    button[data-testid="baseButton-headerNoPadding"] svg,
+    button[data-testid="baseButton-headerNoPadding"] span {
+        color: #ffffff !important;
+        fill: #ffffff !important;
+    }
+
+    /* iOS specific toolbar styling */
+    @supports (-webkit-touch-callout: none) {
+        div[data-testid="stToolbar"] {
+            background-color: #1a1a1a !important;
+            border-bottom: 1px solid #3d3d3d !important;
+        }
+
+        button[data-testid="baseButton-headerNoPadding"] {
+            background-color: #3d3d3d !important;
+            border: 1px solid #4d4d4d !important;
+            color: #ffffff !important;
+        }
+
+        button[data-testid="baseButton-headerNoPadding"] svg,
+        button[data-testid="baseButton-headerNoPadding"] span {
+            color: #ffffff !important;
+            fill: #ffffff !important;
+        }
+    }
+
+    /* Additional toolbar overrides */
+    .stToolbar {
+        background-color: #1a1a1a !important;
+    }
+
+    .stToolbar button {
+        background-color: #3d3d3d !important;
+        color: #ffffff !important;
+    }
+
+    .stToolbar svg {
+        fill: #ffffff !important;
+    }
     </style>
 """,
     unsafe_allow_html=True,
