@@ -38,7 +38,12 @@ st.set_page_config(
     layout="wide",
     page_title="Lease Modeling Dashboard",
     page_icon="🏢",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': 'https://github.com/mikemorretta/CRE',
+        'Report a bug': "https://github.com/mikemorretta/CRE/issues",
+        'About': "# Lease Modeling Dashboard\nA tool for commercial real estate lease analysis"
+    }
 )
 
 # Apply custom styling
@@ -70,6 +75,8 @@ st.markdown(
         background-color: #2d2d2d;
         border: 1px solid #3d3d3d;
         border-radius: 4px;
+        width: 100%;
+        overflow-x: auto;
     }
     
     .dataframe th {
@@ -77,6 +84,8 @@ st.markdown(
         color: white;
         font-weight: bold;
         text-align: center;
+        position: sticky;
+        top: 0;
     }
     
     .dataframe td {
@@ -113,6 +122,27 @@ st.markdown(
         border-radius: 4px;
         padding: 0.4em 1em;
         margin-top: 0.5rem;
+        width: 100%;
+    }
+    
+    /* Mobile-specific styles */
+    @media (max-width: 768px) {
+        .stNumberInput > div > div > input,
+        .stTextInput > div > div > input {
+            font-size: 16px; /* Larger font for better touch targets */
+        }
+        
+        .stButton > button {
+            padding: 0.6em 1em; /* Larger touch targets */
+        }
+        
+        .dataframe {
+            font-size: 14px; /* Slightly smaller font for tables */
+        }
+        
+        .stMarkdown {
+            font-size: 16px; /* Larger font for better readability */
+        }
     }
     
     /* Alerts and info boxes */
@@ -645,8 +675,8 @@ def display_annual_summary(monthly_rents: List[float], inputs: LeaseInputs) -> N
         
         # Convert to DataFrame and filter out rows where all values are zero
         df = pd.DataFrame.from_dict(annual_summary, orient="index").round(2)
-        df.index = df.index.astype(str)  # Convert index to strings
-        df = df.loc[~(df == 0).all(axis=1)]  # Remove rows where all values are zero
+        df.index = df.index.astype(str)  # Ensure index is string type
+        df = df.loc[~(df == 0).all(axis=1)]
         
         # Rename columns
         df = df.rename(
@@ -662,7 +692,7 @@ def display_annual_summary(monthly_rents: List[float], inputs: LeaseInputs) -> N
         # Add monthly rent column
         df["Net Rent / Month"] = (df["Net Rent"] / 12).round(2)
         
-        # Create total row as a DataFrame
+        # Calculate totals
         total_data = {
             "Gross Rent": df["Gross Rent"].sum(),
             "Free Rent Abatement": df["Free Rent Abatement"].sum(),
@@ -671,25 +701,17 @@ def display_annual_summary(monthly_rents: List[float], inputs: LeaseInputs) -> N
             "Net Rent PSF": df["Net Rent"].sum() / inputs.rentable_sf,
             "Net Rent / Month": df["Net Rent"].sum() / (12 * len(df))
         }
-        total_df = pd.DataFrame([total_data])
-        total_df.index = ["Total / Weighted Avg"]
         
-        # Combine main DataFrame with total row
+        # Create total row
+        total_df = pd.DataFrame([total_data], index=["Total / Weighted Avg"])
+        
+        # Combine DataFrames
         df = pd.concat([df, total_df])
         
         # Format numeric columns
         numeric_columns = ["Gross Rent", "Free Rent Abatement", "Net Rent", "Gross Rent PSF", "Net Rent PSF", "Net Rent / Month"]
         for col in numeric_columns:
             df[col] = df[col].apply(format_currency)
-
-        # Create monthly data for export
-        monthly_df = pd.DataFrame({
-            'Month': range(1, len(monthly_rents) + 1),
-            'Monthly Rent': monthly_rents,
-            'Cumulative Rent': np.cumsum(monthly_rents)
-        })
-        monthly_df['Monthly Rent'] = monthly_df['Monthly Rent'].apply(format_currency)
-        monthly_df['Cumulative Rent'] = monthly_df['Cumulative Rent'].apply(format_currency)
 
         # Display styled dataframe
         st.subheader("Annual Summary")
@@ -717,18 +739,15 @@ def display_annual_summary(monthly_rents: List[float], inputs: LeaseInputs) -> N
                 overwrite=False,
             ),
             use_container_width=True,
-            height=(len(df) + 1) * 35 + 100  # Adjust height based on number of rows
+            height=(len(df) + 1) * 35 + 100
         )
 
         # Create export data
         export_df = df.copy()
-        export_monthly_df = monthly_df.copy()
         
         # Remove currency formatting for export
         for col in numeric_columns:
             export_df[col] = export_df[col].str.replace('$', '').str.replace(',', '').astype(float)
-        export_monthly_df['Monthly Rent'] = export_monthly_df['Monthly Rent'].str.replace('$', '').str.replace(',', '').astype(float)
-        export_monthly_df['Cumulative Rent'] = export_monthly_df['Cumulative Rent'].str.replace('$', '').str.replace(',', '').astype(float)
 
         # Download buttons
         col1, col2 = st.columns(2)
@@ -736,8 +755,6 @@ def display_annual_summary(monthly_rents: List[float], inputs: LeaseInputs) -> N
             # Create CSV with both annual and monthly data
             csv_buffer = io.StringIO()
             export_df.to_csv(csv_buffer)
-            csv_buffer.write("\n\nMonthly Data\n")
-            export_monthly_df.to_csv(csv_buffer, index=False)
             st.download_button(
                 "Download as CSV",
                 csv_buffer.getvalue(),
@@ -750,7 +767,6 @@ def display_annual_summary(monthly_rents: List[float], inputs: LeaseInputs) -> N
             excel_buffer = io.BytesIO()
             with pd.ExcelWriter(excel_buffer, engine="xlsxwriter") as writer:
                 export_df.to_excel(writer, index=True, sheet_name="Annual Summary")
-                export_monthly_df.to_excel(writer, index=False, sheet_name="Monthly Data")
             st.download_button(
                 "Download as Excel",
                 excel_buffer.getvalue(),
