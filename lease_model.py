@@ -1178,7 +1178,8 @@ def display_annual_summary(monthly_rents: List[float], inputs: LeaseInputs) -> N
             export_df.to_csv(),
             "lease_summary.csv",
             "text/csv",
-            help="Download annual summary data in CSV format"
+            help="Download annual summary data in CSV format",
+            type="secondary"  # This will make it a gray button
         )
     except Exception as e:
         logger.error(f"Error displaying annual summary: {str(e)}")
