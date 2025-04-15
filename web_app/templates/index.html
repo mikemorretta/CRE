@@ -47,11 +47,10 @@
             border-radius: 16px;
             margin-bottom: 2rem;
             box-shadow: 0 4px 12px var(--shadow-color);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: box-shadow 0.2s ease;
         }
 
         .card:hover {
-            transform: translateY(-2px);
             box-shadow: 0 8px 24px var(--shadow-color);
         }
 
@@ -123,14 +122,15 @@
 
         #plot-container {
             width: 100%;
-            height: 600px;
+            height: 800px;
             margin: 2rem 0;
             background-color: var(--primary-bg);
             border-radius: 16px;
             padding: 1.5rem;
-            overflow: hidden;
+            overflow: visible;
             border: 1px solid var(--border-color);
             box-shadow: 0 4px 12px var(--shadow-color);
+            min-height: 800px;
         }
 
         .metric-label {
@@ -270,11 +270,11 @@
             padding: 1.5rem;
             border-radius: 12px;
             border: 1px solid var(--border-color);
-            transition: transform 0.2s ease;
+            transition: box-shadow 0.2s ease;
         }
 
         .metric-card:hover {
-            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow-color);
         }
 
         .input-section {
@@ -340,6 +340,81 @@
         .collapsed .bi-chevron-up {
             transform: rotate(180deg);
         }
+
+        .container {
+            max-width: 1600px;
+            padding: 2rem;
+        }
+
+        #plot-container {
+            width: 100%;
+            height: 800px;
+            margin: 2rem 0;
+            background-color: var(--primary-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            overflow: visible;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px var(--shadow-color);
+            min-height: 800px;
+        }
+
+        .metrics-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background-color: var(--secondary-bg);
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .metric {
+            background-color: var(--primary-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .metric:hover {
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .metric-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .table-responsive {
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .metrics-container {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            #plot-container {
+                height: 600px;
+                min-height: 600px;
+                padding: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -347,7 +422,7 @@
         <h1>Lease Modeling Dashboard</h1>
         
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">Input Parameters</h5>
@@ -395,7 +470,7 @@
                 </div>
             </div>
             
-            <div class="col-md-8">
+            <div class="col-md-9">
                 <div class="metrics-container">
                     <div class="metric">
                         <div class="metric-label">Total Cost</div>
@@ -656,6 +731,15 @@
                     pad: 4
                 }
             };
+            
+            // Add shapes and annotations if they exist
+            if (data.plot.shapes) {
+                plotLayout.shapes = data.plot.shapes;
+            }
+            if (data.plot.annotations) {
+                plotLayout.annotations = data.plot.annotations;
+            }
+            
             Plotly.newPlot(plotContainer, plotData, plotLayout);
 
             // Update annual summary table
